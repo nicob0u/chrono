@@ -1,0 +1,16 @@
+# VS Code settings folder
+.vscode/
+
+# Lua compiled files
+*.luac
+
+# Log or data files (like your work logs)
+work_log.json
+
+# OS-specific files
+Thumbs.db
+.DS_Store
+
+# Optional: backup files
+*.bak
+*~
