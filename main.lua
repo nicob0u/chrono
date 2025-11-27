@@ -1,28 +1,18 @@
+-- get script dir
+local info = debug.getinfo(1, "S")
+local script_dir = info.source:match("@(.*[/\\])")
 
-local json = require("dkjson")
-local filename = "work_log.json"
+package.path = script_dir .. "?.lua;" .. package.path
+
+local Period = require("period")
 
 
-local file = io.open("filename", "r")
-local data = {}
-if file then 
-  local content = file:read("*a")
+local command = arg[1]
 
-data = json.decode(content) or {}
-file:close()
+if command == "start" then
+  print(Period:Start())
+elseif command == "pause" then
+  print(Period:Pause())
+elseif command == "test" then
+  Period:CommandTest()
 end
-
-local today = os.date("%Y-%m-%d")
-data[today] = data[today] or {}
-
-local start_time = os.date("%H:%M")
-if type(data[today]) ~= "table" then
-    data[today] = {}
-end
-table.insert(data[today], {start = start_time})
-
-file = io.open(filename, "w")
-file:write(json.encode(data, {indent = true}))
-file:close()
-
-print("Start time recorded:", start_time)
