@@ -14,3 +14,5 @@ Thumbs.db
 # Optional: backup files
 *.bak
 *~
+# Temp json log
+work_log.json
