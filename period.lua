@@ -9,7 +9,7 @@ local filename = script_path .. "work_log.json"
 
 local function load_data()
   local file = io.open(filename, "r")
-  local data = {}
+  local data = { type, time }
   if file then
     local content = file:read("*a")
 
@@ -43,34 +43,33 @@ function Period:new(start, stop)
   return obj
 end
 
-function Period:CommandTest()
-  print("This is a CLI test.")
-end
-
 function Period:Start()
   local start_time = os.date("%H:%M")
-  table.insert(data[today], { start = start_time, pause = nil })
+  data[today]["Session"] = data[today]["Session"] or {}
+  local new_session = { { type = "start", time = start_time } }
+
+  table.insert(data[today]["Session"], new_session)
   save_data(data)
   return start_time
 end
 
 function Period:Pause()
   local pause_time = os.date("%H:%M")
-
-  local last_session = data[today][#data[today]]
-  if last_session ~= nil and last_session.pause == nil then
-    last_session.pause = pause_time
+  local sessions = data[today]["Session"]
+  local last_session = sessions[#sessions]
+  if last_session and last_session.type ~= "pause" then
+    table.insert(last_session, { { type = "pause", time = pause_time } })
+  elseif last_session.type == "pause" then
+    print("session already paused.")
   else
-    table.insert(data[today], { start = nil, pause = pause_time })
+    print("no sessions found to pause.")
   end
   save_data(data)
   return pause_time
 end
 
-function Period:CalculateDuration(start, stop)
-  local duration = start - stop
-  print(duration)
-  return duration
+function Period:CalculateDuration()
+
 end
 
 function Period:ConvertToDecimal()

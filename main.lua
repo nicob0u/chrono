@@ -1,3 +1,5 @@
+--todo: get exe, tweak outputs, add ascii art
+
 -- get script dir
 local info = debug.getinfo(1, "S")
 local script_dir = info.source:match("@(.*[/\\])")
