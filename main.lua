@@ -1,4 +1,5 @@
 --todo: get exe, tweak outputs, add ascii art
+-- bugs: table resetting at midnight, multiple pauses for a start / or pauseless starts.
 
 -- get script dir
 local info = debug.getinfo(1, "S")
@@ -17,4 +18,6 @@ elseif command == "pause" then
   print(Period:Pause())
 elseif command == "test" then
   Period:CommandTest()
+elseif command == "calculate" then
+  Period:CalculateDuration()
 end
