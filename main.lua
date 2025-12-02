@@ -1,3 +1,6 @@
+local exe_path = arg[0]:gsub("[^/\\]*$", "")
+package.path = exe_path .. "?.lua;" .. exe_path .. "?/init.lua;" .. package.path
+
 -- get script dir
 local info = debug.getinfo(1, "S")
 local script_dir
