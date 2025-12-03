@@ -7,3 +7,4 @@ a tiny command-line work period tracker.<br>
 - chrono start
 - chrono pause
 - chrono calculate
+- chrono clear-log
