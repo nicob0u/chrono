@@ -103,9 +103,10 @@ function Period:CalculateDuration()
   local sum = 0
 
   for date, dateData in pairs(data) do
-    print("Date:", date)
-
-    local sessions = dateData.Session
+    if date == today then
+      print("Date:", date)
+    end
+    local sessions = data[today]["Session"]
     if sessions then
       for _, session in ipairs(sessions) do
         local start_time_calc
@@ -136,6 +137,17 @@ end
 
 function Period:ConvertToDecimal(seconds)
   return seconds / 3600
+end
+
+function Period:ClearLog()
+  local file = io.open(filename, "w")
+  if file == nil then
+    print("log not found.")
+    return
+  end
+  file:write("{}")
+  file:close()
+  print("log cleared.")
 end
 
 return Period
