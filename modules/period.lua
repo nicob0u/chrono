@@ -102,35 +102,33 @@ function Period:CalculateDuration()
   end
   local sum = 0
 
-  for date, dateData in pairs(data) do
-    if date == today then
-      print("Date:", date)
-    end
-    local sessions = data[today]["Session"]
-    if sessions then
-      for _, session in ipairs(sessions) do
-        local start_time_calc
-        local pause_time_calc
-        for _, event in ipairs(session) do
-          if event.type == "start" then
-            start_time_calc = toTimestamp(event.time)
-          end
-          if event.type == "pause" then
-            pause_time_calc = toTimestamp(event.time)
-          end
+
+  print("Date:", today)
+
+  local sessions = data[today]["Session"]
+  if sessions then
+    for _, session in ipairs(sessions) do
+      local start_time_calc
+      local pause_time_calc
+      for _, event in ipairs(session) do
+        if event.type == "start" then
+          start_time_calc = toTimestamp(event.time)
         end
-        if start_time_calc and pause_time_calc then
-          local Start = start_time_calc
-          local Pause = pause_time_calc
-          local diff = os.difftime(Pause, Start)
-          -- print("diff ", diff)
-          sum = sum + diff
-        else
-          print("session has missing data.")
+        if event.type == "pause" then
+          pause_time_calc = toTimestamp(event.time)
         end
       end
-      -- print("sum printed ", sum)
+      if start_time_calc and pause_time_calc then
+        local Start = start_time_calc
+        local Pause = pause_time_calc
+        local diff = os.difftime(Pause, Start)
+        -- print("diff ", diff)
+        sum = sum + diff
+      else
+        print("session has missing data.")
+      end
     end
+    -- print("sum printed ", sum)
   end
   print(Period:ConvertToDecimal(sum))
 end
